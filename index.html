@@ -17,57 +17,77 @@
       <div class="container">
         <h1>Nicholas Pfeifle</h1>
         <h1>CS 482 Homework</h1>
-        <h2></h2>
       </div>
     </header>
 
     <div class="container">
       <section id="main_content">
-        <h3>Assignment Report</h3>
-          <p>The 17 images below should cover the requirements for Homework #1. I began by reading in the initial image; as you can see I chose grayscale for this assignment. Next I resized that image to 512x512 pixels using <a href ="http://docs.opencv.org/trunk/da/d6e/tutorial_py_geometric_transformations.html">cv2.resize()</a>. </p>
-          <p>For the next 3 images, I used <a href="http://docs.opencv.org/3.1.0/d4/d13/tutorial_py_filtering.html">cv2.GaussianBlur()</a>, setting sigma to 1, 2, and 3 respectively. As professor Duric pointed out in class, the kernel size has a minimum value based on the value of sigma, therefore the kernel sizes for these images are as follows: 7x7, 13x13, and 19x19 respectively. </p>
-          <p>Next, I found the derivatives in the x and y directions for each of the previous 4 images (resized image, blurred image 1, blurred image 2, blurred image 3) using <a href="http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_gradients/py_gradients.html">cv2.Sobel()</a> and have them displayed below. Each instance of <a href="http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_gradients/py_gradients.html">cv2.Sobel()</a> uses a kernel size of 5x5, and output datatype of cv2.CV_64F. </p>
-          <p>The next 4 images are the magnitudes of the original 4 images. To do this, I used <a href="http://docs.opencv.org/3.1.0/da/d22/tutorial_py_canny.html">cv2.Canny()</a>. I understand that <a href="http://docs.opencv.org/3.1.0/da/d22/tutorial_py_canny.html">cv2.Canny()</a> is really edge detection, rather than an actual magnitude. I read through the documentation, and it does actually perform the same magnitude operation, however the image is based on a range, where a pixel is white if the magnitude is greater than a minimum and less than a maximum. The documentation and <a href="https://www.youtube.com/watch?v=Z78zbnLlPUA&list=PLQVvvaa0QuDdttJXlLtAJxJetJcqmqlQq&index=1">tutorial</a> I watched set the minimum to 100 and the maximum to 200, so I did the same. </p>
-          <p>As for applying filters to each color channel separately, Professor Duric told me not to worry about it, since I am using grayscale. </p>
-        <h3>Original Image</h3>
-        <img src="images/img.jpg" />
-        <h3>Resized Image</h3>
-        <img src="images/res.jpg" />
-        <h3>Gaussian Blur(sigma 1)</h3>
-        <img src="images/blur_1.jpg" />
-        <h3>Gaussian Blur(sigma 2)</h3>
-        <img src="images/blur_2.jpg" />
-        <h3>Gaussian Blur(sigma 3)</h3>
-        <img src="images/blur_3.jpg" />
-        <h2>Derivatives in the X Direction:</h2>
-          <h3>Resized Image</h3>
-          <img src="images/res_dx.jpg" />
-          <h3>Gaussian Blur(sigma 1)</h3>
-          <img src="images/b1_dx.jpg" />
-          <h3>Gaussian Blur(sigma 2)</h3>
-          <img src="images/b2_dx.jpg" />
-          <h3>Gaussian Blur(sigma 3)</h3>
-          <img src="images/b3_dx.jpg" />
-        <h2>Derivatives in the Y Direction:</h2>
-          <h3>Resized Image</h3>
-          <img src="images/res_dy.jpg" />
-          <h3>Gaussian Blur(sigma 1)</h3>
-          <img src="images/b1_dy.jpg" />
-          <h3>Gaussian Blur(sigma 2)</h3>
-          <img src="images/b2_dy.jpg" />
-          <h3>Gaussian Blur(sigma 3)</h3>
-          <img src="images/b3_dy.jpg" />
-        <h2>Magnitude Images:</h2>
-          <h3>Resized Image</h3>
-          <img src="images/res_mag.jpg" />
-          <h3>Gaussian Blur(sigma 1)</h3>
-          <img src="images/b1_mag.jpg" />
-          <h3>Gaussian Blur(sigma 2)</h3>
-          <img src="images/b2_mag.jpg" />
-          <h3>Gaussian Blur(sigma 3)</h3>
-          <img src="images/b3_mag.jpg" />
+        <h2>Assignment Report</h2>
+        <p>The 25 images below should cover the requirements for Homewrok #2. I began by reading in the 5 original images as grayscale(as shown in the second set of 5 images). Next I used <a href="http://docs.opencv.org/3.1.0/da/d22/tutorial_py_canny.html">Canny Edge Detector</a>(like last time) to find the edges in each image. These are displayed in the third set of 5 images. I kept all of the same settings, so this should look pretty familiar. </p>
+        <p>The fourth set of 5 images show the Standard Hough Transform lines drawn onto their respective images. I thought I'd change things up just a little, so I modified the colors of the lines between each image. Getting it to work properly was quite a hassle at first, because the <a href="http://docs.opencv.org/2.4/modules/imgproc/doc/feature_detection.html?highlight=houghlines#houghlines">documentation</a> and <a href="http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html">example</a> I found online gives incomplete information about how the line output is arranged. cv2.HoughLines() returns an array of arrays(all length 1), and those arrays each contain a pair, which represents rho and theta. Why they added the redundant layer of arrays, I will never understand. However, since it only returns (rho,theta), a few calculations needed to be performed. I just kept the basic structure that was given in the <a href="http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html">example</a>.</p>
+        <p>The final set of 5 images show the Probabilistic Hough Transform lines drawn onto their respective images. This one was much simpler to output than regular Hough Transform, because the (x1,y1) and (x2,y2) values are already calculated. I kept the same Minimum Line Lengths and Maximum Line Gap values given in the <a href="http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html">example</a> so that part wasn't too bad. HoughLinesP() returns the same general structure as HoughLines(), except this one is an array of arrays(each length 1), that contain arrays holding the values (x1, y1, x2, y2). </p>
+        
+        <h2>Original Images:</h2>
+          <h3>Main Hall 4013</h3>
+          <img src="images/ST2MainHall4013.jpg" />
+          <h3>Main Hall 4021</h3>
+          <img src="images/ST2MainHall4021.jpg" />
+          <h3>Main Hall 4034</h3>
+          <img src="images/ST2MainHall4034.jpg" />
+          <h3>Main Hall 4069</h3>
+          <img src="images/ST2MainHall4069.jpg" />
+          <h3>Main Hall 4089</h3>
+          <img src="images/ST2MainHall4089.jpg" />
+        
+        <h2>Grayscale Images:</h2>
+          <h3>Grayscale Main Hall 4013</h3>
+          <img src="images/img1.jpg" />
+          <h3>Grayscale Main Hall 4021</h3>
+          <img src="images/img5.jpg" />
+          <h3>Grayscale Main Hall 4034</h3>
+          <img src="images/img2.jpg" />
+          <h3>Grayscale Main Hall 4069</h3>
+          <img src="images/img3.jpg" />
+          <h3>Grayscale Main Hall 4089</h3>
+          <img src="images/img4.jpg" />
+        
+        <h2>Canny Images:</h2>
+          <h3>Canny Main Hall 4013</h3>
+          <img src="images/img1_canny.jpg" />
+          <h3>Canny Main Hall 4021</h3>
+          <img src="images/img5_canny.jpg" />
+          <h3>Canny Main Hall 4034</h3>
+          <img src="images/img2_canny.jpg" />
+          <h3>Canny Main Hall 4069</h3>
+          <img src="images/img3_canny.jpg" />
+          <h3>Canny Main Hall 4089</h3>
+          <img src="images/img4_canny.jpg" />
+        
+        <h2>Standard Hough Line Images:</h2>
+          <h3>Standard Hough Lines on Main Hall 4013</h3>
+          <img src="images/img1_hl.jpg" />
+          <h3>Standard Hough Lines on Main Hall 4021</h3>
+          <img src="images/img5_hl.jpg" />
+          <h3>Standard Hough Lines on Main Hall 4034</h3>
+          <img src="images/img2_hl.jpg" />
+          <h3>Standard Hough Lines on Main Hall 4069</h3>
+          <img src="images/img3_hl.jpg" />
+          <h3>Standard Hough Lines on Main Hall 4089</h3>
+          <img src="images/img4_hl.jpg" />
+        
+        <h2>Probabilistic Hough Line Images:</h2>
+          <h3>Probabilistic Hough Lines on Main Hall 4013</h3>
+          <img src="images/img1_hlp.jpg" />
+          <h3>Probabilistic Hough Lines on Main Hall 4021</h3>
+          <img src="images/img5_hlp.jpg" />
+          <h3>Probabilistic Hough Lines on Main Hall 4034</h3>
+          <img src="images/img2_hlp.jpg" />
+          <h3>Probabilistic Hough Lines on Main Hall 4069</h3>
+          <img src="images/img3_hlp.jpg" />
+          <h3>Probabilistic Hough Lines on Main Hall 4089</h3>
+          <img src="images/img4_hlp.jpg" />
+        
       </section>
     </div>
-    
   </body>
 </html>
