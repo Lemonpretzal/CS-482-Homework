@@ -23,70 +23,73 @@
     <div class="container">
       <section id="main_content">
         <h2>Assignment Report</h2>
-        <p>The 25 images below should cover the requirements for Homewrok #2. I began by reading in the 5 original images as grayscale(as shown in the second set of 5 images). Next I used <a href="http://docs.opencv.org/3.1.0/da/d22/tutorial_py_canny.html">Canny Edge Detector</a>(like last time) to find the edges in each image. These are displayed in the third set of 5 images. I kept all of the same settings, so this should look pretty familiar. </p>
-        <p>The fourth set of 5 images show the Standard Hough Transform lines drawn onto their respective images. I thought I'd change things up just a little, so I modified the colors of the lines between each image. Getting it to work properly was quite a hassle at first, because the <a href="http://docs.opencv.org/2.4/modules/imgproc/doc/feature_detection.html?highlight=houghlines#houghlines">documentation</a> and <a href="http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html">example</a> I found online gives incomplete information about how the line output is arranged. cv2.HoughLines() returns an array of arrays(all length 1), and those arrays each contain a pair, which represents rho and theta. Why they added the redundant layer of arrays, I will never understand. However, since it only returns (rho,theta), a few calculations needed to be performed. I just kept the basic structure that was given in the <a href="http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html">example</a>.</p>
-        <p>The final set of 5 images show the Probabilistic Hough Transform lines drawn onto their respective images. This one was much simpler to output than regular Hough Transform, because the (x1,y1) and (x2,y2) values are already calculated. I kept the same Minimum Line Lengths and Maximum Line Gap values given in the <a href="http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html">example</a> so that part wasn't too bad. HoughLinesP() returns the same general structure as HoughLines(), except this one is an array of arrays(each length 1), that contain arrays holding the values (x1, y1, x2, y2). </p>
+        
+        <p>I'm just going to point this out first, this project wasn't quite as hard as my grade suggests it is. It was a fun easy exercise, but getting things set-up was a complete nightmare, and I hope I never have to do anything like that again. Now that the disclaimer is out of the way, lets get to explaining the code.</p>
+        <p>So the first function (keypoints)is pretty easy; just find the keypoints and descriptors and return them. I decided to make it a little nicer so I added an optional display function to it, allowing us to turn on and off the "imshow", "imwrite", and "print" statements. I used a simple SIFT detector for a couple reasons, but it's mainly just because I didn't want to have to deal with some of the quirks of the other detector types, for instance "threshold". I originally planned to make an extra parameter to allow users to select their own detector type but ,as you can probably tell, I'm running out of time as it is. Either way, I think I did a pretty good job on this one; it's pretty similar to the professor's example, but I did enjoy adding the extra little tweaks to it.</p>
+        <p>Next, we have the matching() function. Conceptually, this wasn't too challenging, but I was greatly influenced by the example code. I used a "BruteForce" matcher because it seemed the simplest, most reasonable, and most commonly used. However, the optional display functionality on this is what I'm most proud of on this entire project! I used the professor's idea of drawing a line between the keypoint on one image and its corresponding/matching keypoint on the other image, however I took it a step further and made them all arrows, calculated a color gradient from greed to red, based on the distance between the points (shorter error distance = green, larger error distance = red). On top of all of that, I added a circle around each of the matching key points to make them just that much more visible. I really like it, and I hope you do too! :) Also, just as another disclaimer, the selection of good matches was set to "<=" the threshold, rather than "<", because if all the points are perfect matches, meaning that their mean distance is 0, then a perfect match would return a 0. </p>
+        <p>Lastly, we're going to talk about the allMatches() function. This one was pretty tough, cause I am quite unfamiliar with directory manipulation, however I got it to work, and everything should be in order. I used this weird form of 2D arrays because I was having trouble doing it the way I thought it should be and it seemed like a fun way of implementing it. Now the 2D array will be filled with values from 0 to 1, representing how good of a match they were. I saw that some of the similar images were getting pretty low scores though (0.3 for almost identical images), so I decided to raise them a bit by finding the square root, and displaying that value. I hope that all makes sense. </p>
+        <p>Enjoy reviewing the rest of my project!</p>
         
         <h2>Original Images:</h2>
-          <h3>Main Hall 4013</h3>
-          <img src="images/ST2MainHall4013.jpg" />
+          <h3>Main Hall 4001</h3>
+          <img src="images/ST2MainHall4001.jpg" />
+          <h3>Main Hall 4002</h3>
+          <img src="images/ST2MainHall4002.jpg" />
           <h3>Main Hall 4021</h3>
           <img src="images/ST2MainHall4021.jpg" />
-          <h3>Main Hall 4034</h3>
-          <img src="images/ST2MainHall4034.jpg" />
-          <h3>Main Hall 4069</h3>
-          <img src="images/ST2MainHall4069.jpg" />
-          <h3>Main Hall 4089</h3>
-          <img src="images/ST2MainHall4089.jpg" />
+          <h3>Main Hall 4022</h3>
+          <img src="images/ST2MainHall4022.jpg" />
+          <h3>Main Hall 4051</h3>
+          <img src="images/ST2MainHall4051.jpg" />
+          <h3>Main Hall 4052</h3>
+          <img src="images/ST2MainHall4052.jpg" />
+          <h3>Main Hall 4079</h3>
+          <img src="images/ST2MainHall4079.jpg" />
+          <h3>Main Hall 4080</h3>
+          <img src="images/ST2MainHall4080.jpg" />
         
-        <h2>Grayscale Images:</h2>
-          <h3>Grayscale Main Hall 4013</h3>
-          <img src="images/img1.jpg" />
-          <h3>Grayscale Main Hall 4021</h3>
-          <img src="images/img5.jpg" />
-          <h3>Grayscale Main Hall 4034</h3>
-          <img src="images/img2.jpg" />
-          <h3>Grayscale Main Hall 4069</h3>
-          <img src="images/img3.jpg" />
-          <h3>Grayscale Main Hall 4089</h3>
-          <img src="images/img4.jpg" />
+        <h2>Images With Keypoints labeled in white:</h2>
+          <h3>Keypoints in Main Hall 4001</h3>
+          <img src="images/img1_keypoints.jpg" />
+          <h3>Keypoints in Main Hall 4021</h3>
+          <img src="images/img21_keypoints.jpg" />
+          <h3>Keypoints in Main Hall 4051</h3>
+          <img src="images/img51_keypoints.jpg" />
+          <h3>Keypoints in Main Hall 4079</h3>
+          <img src="images/img79_keypoints.jpg" />
+          
+        <h2>Matching:</h2>
         
-        <h2>Canny Images:</h2>
-          <h3>Canny Main Hall 4013</h3>
-          <img src="images/img1_canny.jpg" />
-          <h3>Canny Main Hall 4021</h3>
-          <img src="images/img5_canny.jpg" />
-          <h3>Canny Main Hall 4034</h3>
-          <img src="images/img2_canny.jpg" />
-          <h3>Canny Main Hall 4069</h3>
-          <img src="images/img3_canny.jpg" />
-          <h3>Canny Main Hall 4089</h3>
-          <img src="images/img4_canny.jpg" />
+        <h2>Good Matches:</h2>
+          <h3>Matching Main Hall 4001...</h3>
+          <img src="images/img1_matching.jpg" />
+          <h3>...With Main Hall 4002</h3>
+          <img src="images/img2_matching.jpg" />
+          <h3>Matching Main Hall 4021...</h3>
+          <img src="images/img21_matching.jpg" />
+          <h3>...With Main Hall 4022</h3>
+          <img src="images/img22_matching.jpg" />
         
-        <h2>Standard Hough Line Images:</h2>
-          <h3>Standard Hough Lines on Main Hall 4013</h3>
-          <img src="images/img1_hl.jpg" />
-          <h3>Standard Hough Lines on Main Hall 4021</h3>
-          <img src="images/img5_hl.jpg" />
-          <h3>Standard Hough Lines on Main Hall 4034</h3>
-          <img src="images/img2_hl.jpg" />
-          <h3>Standard Hough Lines on Main Hall 4069</h3>
-          <img src="images/img3_hl.jpg" />
-          <h3>Standard Hough Lines on Main Hall 4089</h3>
-          <img src="images/img4_hl.jpg" />
+        <h2>Bad Matches:</h2>
+          <h3>Matching Main Hall 4051...</h3>
+          <img src="images/img51_matching.jpg" />
+          <h3>...With Main Hall 4080</h3>
+          <img src="images/img80_matching.jpg" />
+          <h3>Matching Main Hall 4052...</h3>
+          <img src="images/img52_matching.jpg" />
+          <h3>...With Main Hall 4079</h3>
+          <img src="images/img79_matching.jpg" />
         
-        <h2>Probabilistic Hough Line Images:</h2>
-          <h3>Probabilistic Hough Lines on Main Hall 4013</h3>
-          <img src="images/img1_hlp.jpg" />
-          <h3>Probabilistic Hough Lines on Main Hall 4021</h3>
-          <img src="images/img5_hlp.jpg" />
-          <h3>Probabilistic Hough Lines on Main Hall 4034</h3>
-          <img src="images/img2_hlp.jpg" />
-          <h3>Probabilistic Hough Lines on Main Hall 4069</h3>
-          <img src="images/img3_hlp.jpg" />
-          <h3>Probabilistic Hough Lines on Main Hall 4089</h3>
-          <img src="images/img4_hlp.jpg" />
-        
+        <p>I don't really know how to display the output of allMatches, because it's a huge 2D array of 9800 values that could easily go out to 12 decimal places each. If you'd like to see my work, please tell me what else I'd need to include. I can tell you some of the values if you really like, but it's pretty tedious</p>
+        <p>Here are some examples of what's in my matrix:</p>
+        <p>The match score of 4001 vs 4001 is 1.0000</p>
+        <p>The match score of 4001 vs 4002 is 0.5721</p>
+        <p>The match score of 4001 vs 4003 is 0.5825</p>
+        <p>The match score of 4001 vs 4019 is 0.3216</p>
+        <p>The match score of 4001 vs 4023 is 0.0000</p>
+        <p>The match score of 4001 vs 4037 is 0.1313</p>
+        <p>The match score of 4024 vs 4024 is 1.0000</p>
+        <p>I think you get the idea by now. Comparing an image with itself gets 1.0, others are pretty low. Not much else to it.</p>
       </section>
     </div>
   </body>
